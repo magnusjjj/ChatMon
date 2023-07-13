@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ChatMon": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "CHATMON_DEBUG": "TRUE"
+      }
+    }
+  }
+}

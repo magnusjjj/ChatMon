@@ -1,0 +1,8 @@
+/publish
+/Frontend/obj
+/Frontend/frontend.esproj.user
+ChatMon/obj
+Chatmon/bin
+/Frontend/.vs/
+/.vs
+/ChatMon/Properties/PublishProfiles
