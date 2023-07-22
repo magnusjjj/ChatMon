@@ -56,11 +56,6 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    @font-face {
-        font-family: "Pokemon R/S";
-        src: url("/public/assets/pokemon_fire_red.woff") format('woff');
-    }
-
     .message {
         border: 0.2em solid #DDDDDD;
         border-radius: 2em;

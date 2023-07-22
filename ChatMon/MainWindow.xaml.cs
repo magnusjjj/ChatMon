@@ -1,6 +1,7 @@
 ﻿using Microsoft.Web.WebView2.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Net.Http;
 using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,6 +22,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Path = System.IO.Path;
 
 namespace ChatMon
 {
@@ -36,28 +39,91 @@ namespace ChatMon
             
         }
 
-        private async Task Setup()
+        private async Task DownloadWithProgressAndExtract(string url, string tempname, string target, double stagepercent)
         {
-            if (!Directory.Exists("html/game/pokemon/pokemon.json-master")) {
-                if (!File.Exists("master.zip")) { 
-                    MessageBox.Show("Because this is the first time you run the tool, we need to download and extract some files. This will take a little bit.");
+            if (!Directory.Exists(target))
+            {
+                if (!File.Exists(tempname))
+                {
+                    SendProgress("Starting download of: " + url, stagepercent, 0);
                     HttpClient client = new HttpClient();
-                    using (var s = await client.GetStreamAsync("https://github.com/fanzeyi/pokemon.json/archive/refs/heads/master.zip"))
+                    using (var g = await client.GetAsync(url))
                     {
-                        using (var fs = new FileStream("master.zip", FileMode.CreateNew))
+                        var contentLength = g.Content.Headers.ContentLength;
+
+                        using (var download = await g.Content.ReadAsStreamAsync())
                         {
-                            await s.CopyToAsync(fs);
+                            var buffer = new byte[81920];
+                            long totalBytesRead = 0;
+                            int bytesRead;
+
+                            var fs = new FileStream(tempname, FileMode.CreateNew);
+
+                            while ((bytesRead = await download.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false)) != 0)
+                            {
+                                await fs.WriteAsync(buffer, 0, bytesRead).ConfigureAwait(false);
+                                totalBytesRead += bytesRead;
+
+                                if (!contentLength.HasValue)
+                                {
+                                    SendProgress("Downloaded " + (int)(totalBytesRead / 1000) + "kb", stagepercent, 10);
+                                }
+                                else
+                                {
+                                    double percent = ((double)totalBytesRead / contentLength.Value) * 100;
+
+                                    SendProgress("Downloading " + (int)(contentLength / 1000) + "kb, read " + (int)(totalBytesRead/1000) + "kb ", stagepercent, percent);
+                                }
+                            }
+
+                            fs.Close();
                         }
                     }
                 }
-                ZipFile.ExtractToDirectory("master.zip", "html/game/pokemon/");
+
+                SendProgress("Extracting zip file " + tempname + "(no progress information available, sorry)", stagepercent, 10);
+                try
+                {
+                    ZipFile.ExtractToDirectory(tempname, target);
+                }
+                catch(System.IO.InvalidDataException e) {
+                    MessageBox.Show("The zip file downloaded was malformed. This usually means that the download was aborted. Will retry.");
+                    File.Delete(tempname);
+                    await DownloadWithProgressAndExtract(url, tempname, target, stagepercent);
+                }
+                
             }
-            //await c.DownloadFileTaskAsync(new Uri("https://github.com/fanzeyi/pokemon.json/archive/refs/heads/master.zip"), "pokemonjson.zip");
+        }
+
+        private async Task Setup()
+        {
+            //SendProgress("Really long text Really long textReally long textReally long textReally long textReally long textReally long textReally long textReally long text", 20, 50);
+            await DownloadWithProgressAndExtract("https://github.com/fanzeyi/pokemon.json/archive/refs/heads/master.zip", "pokemonpictures.zip", "html/game/pokemon/", 50);
+            SendProgress("Completely done!", 100, 100);
+            this.Dispatcher.Invoke(() => {
+                webView.CoreWebView2.PostWebMessageAsJson(JsonSerializer.Serialize(new
+                {
+                    type = "SetupDone"
+                }));
+            });
+        }
+
+        private void SendProgress(string progress, double percent1, double percent2)
+        {
+            this.Dispatcher.Invoke(() => {
+                webView.CoreWebView2.PostWebMessageAsJson(JsonSerializer.Serialize(new
+                {
+                    type = "ChatMonProgress",
+                    message = progress,
+                    percent1,
+                    percent2
+                }));
+            });
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            await Setup();
+            
             CoreWebView2EnvironmentOptions Options = new CoreWebView2EnvironmentOptions();
             Options.AdditionalBrowserArguments = "--enable-features=msWebView2EnableDraggableRegions";
             CoreWebView2Environment env = await CoreWebView2Environment.CreateAsync(null, null, Options);
@@ -84,7 +150,7 @@ namespace ChatMon
 
         }
 
-        private void CoreWebView2_WebMessageReceived(object? sender, CoreWebView2WebMessageReceivedEventArgs e)
+        private async void CoreWebView2_WebMessageReceived(object? sender, CoreWebView2WebMessageReceivedEventArgs e)
         {
 
             string themessage = e.WebMessageAsJson;
@@ -93,6 +159,11 @@ namespace ChatMon
             {
                 webView.CoreWebView2.PostWebMessageAsJson("{\"type\":\"GetSettings\"}");
             }*/
+
+            if(mfjs.type == "StartPreloader")
+            {
+                await Setup();
+            }
 
             if(mfjs.type == "ChatMonSettings")
             {

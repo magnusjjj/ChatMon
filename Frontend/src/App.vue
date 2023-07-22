@@ -1,5 +1,6 @@
 <template>
-    <div class="mainwindow">
+    <ChatMonPreLoader v-if="ShouldShowPreloader"/>
+    <div v-else class="mainwindow">
         <div style="height: 4em;">
             <n-button class="dragmeh" size="large" type="primary" v-if="ShouldShowUI">
                 Drag the window here
@@ -36,8 +37,11 @@
 
 <script setup>
     import { ref, reactive } from 'vue';
-
+    import ChatMonPreLoader from './components/ChatMonPreLoader.vue';
     const ShouldShowUI = ref(true);
+    const ShouldShowPreloader = ref(true);
+
+
 
     // We can't use the :focus css, because then we can't use the --app-region drag, due to OS-level issues. Unfixable.
     // We want to be able to use --app-region drag, so that we can drag around the window with the dragme box.
@@ -61,6 +65,9 @@
     import ChatHandler from './handlers/chathandler.js';
     import TTSHandler from './handlers/ttshandler';
     import WebView2IntegrationHandler from './handlers/webview2integrationhandler';
+
+    WebView2IntegrationHandler.SendMessage({"type": "StartPreloader"});
+
 
     var PersonList = reactive([{}, {}, {}, {}, {}, {}]);
     var MessageList = reactive(["", "", "", "", "", ""]);
@@ -121,6 +128,10 @@
         }
     });
 
+    WebView2IntegrationHandler.onMessage('SetupDone', () => {
+        ShouldShowPreloader.value = false;
+    });
+
     function exitchatmon() {
         window.close();
     }
@@ -128,6 +139,11 @@
 </script>
 
 <style>
+    @font-face {
+        font-family: "Pokemon R/S";
+        src: url("/public/assets/pokemon_fire_red.woff") format('woff');
+    }
+
     .dragmeh {
         --app-region: drag;
         -webkit-app-region: drag;
