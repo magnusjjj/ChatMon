@@ -16,8 +16,8 @@
         </div>
         <div class="content">
             <PersonSlot v-for="(person, index) in PersonList" :key="index" :person="person" :slotnumber="index" @CharacterPictureClicked="OnCharacterClicked" :message="MessageList[index]" />
-            <PersonConfigurator :show="ShouldShowConfigurator" :personslot="ConfiguratorSlot" :person="ConfiguratorPerson" @SaveCompleted="SavePersonCompleted" />
-            <ChatMonSettings :show="ShouldShowSettings" @SaveCompleted="SaveSettingsCompleted" />
+            <PersonConfigurator :show="ShouldShowConfigurator" :personslot="ConfiguratorSlot" :person="ConfiguratorPerson" @SaveCompleted="SavePersonCompleted" @Cancelled="SavePersonCancelled"/>
+            <ChatMonSettings :show="ShouldShowSettings" @SaveCompleted="SaveSettingsCompleted" @Cancelled="SaveSettingsCancelled"/>
         </div>
         <div class="ShowSettingsButton" v-if="ShouldShowUI">
             <n-button @click="ShowSettings" size="large" type="primary">
@@ -89,11 +89,20 @@
         ShouldShowConfigurator.value = false;
     }
 
+    // eslint-disable-next-line no-unused-vars
+    function SavePersonCancelled(slotnumber) {
+        ShouldShowConfigurator.value = false;
+    }
+
     function ShowSettings() {
         ShouldShowSettings.value = true;
     }
 
     function SaveSettingsCompleted() {
+        ShouldShowSettings.value = false;
+    }
+
+    function SaveSettingsCancelled() {
         ShouldShowSettings.value = false;
     }
 

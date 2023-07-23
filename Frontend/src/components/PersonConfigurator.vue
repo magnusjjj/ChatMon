@@ -1,5 +1,5 @@
 <script setup>
-    import { NSelect, NInput, NTooltip, NForm, NFormItem, NInputGroup, NButton, NIcon } from 'naive-ui'
+    import { NSelect, NInput, NTooltip, NForm, NFormItem, NInputGroup, NButton, NIcon, NSpace } from 'naive-ui'
     import { SoundFilled } from '@vicons/antd'
     import { ref, reactive, onUpdated } from 'vue';
     import SaveDataHandler from '../handlers/savedatahandler.js';
@@ -12,7 +12,7 @@
         personslot: Number
     });
 
-    const emit = defineEmits(["SaveCompleted"]);
+    const emit = defineEmits(["SaveCompleted", "Cancelled"]);
 
     const state = reactive({
         voicelist: TTSHandler.getNaiveVoiceList(),
@@ -33,6 +33,10 @@
         emit("SaveCompleted", props.personslot, savedata);
     }
 
+    function Cancel() {
+        emit("Cancelled", props.personslot);
+    }
+
     const pokedex = ref([]);
 
     fetch('/game/pokemon/pokemon.json-master/pokedex.json')
@@ -44,22 +48,6 @@
             pokedex.value.unshift({ "value": "0", "label": "None" });
         });
 
-/*
-    var synth = window.speechSynthesis;
-    var voices = synth.getVoices();
-
-    function populatevoices() {
-        voices = synth.getVoices();
-
-        for (let i = 0; i < voices.length; i++) {
-            var langtext = voices[i].default ? "default" : `${voices[i].name} (${voices[i].lang})`;
-            state.voicelist.push({ "value": langtext, "label": langtext });
-        }
-        console.log("Loaded speech data!", state.voicelist);
-    }
-
-    if (voices.length) populatevoices(state);
-    synth.addEventListener("voiceschanged", () => { populatevoices() });*/
 
     onUpdated(() => {
         savedata.username = props.person.username ?? "";
@@ -71,16 +59,6 @@
 
     function testVoice() {
         TTSHandler.speak("I'm a pokemon!", savedata.voice);
-/*        var utterThis = new SpeechSynthesisUtterance("I'm a pokemon!");
-
-        for (let i = 0; i < voices.length; i++) {
-            if (`${voices[i].name} (${voices[i].lang})` == savedata.voice) {
-                utterThis.voice = voices[i];
-            }
-        }
-
-        utterThis.volume = 0.1; // Todo, actually grab the setting
-        synth.speak(utterThis);*/
     }
 
     function onusernamechange() {
@@ -95,7 +73,7 @@
                 <n-form-item label="Username">
                     <n-tooltip trigger="hover">
                         <template #trigger>
-                            <n-input v-model:value="savedata.username" @blur="onusernamechange"/>
+                            <n-input v-model:value="savedata.username" @blur="onusernamechange" />
                         </template>
                         The *username* of the chatter, not what it looks like in chat. Usually lowercase and no special letters. You might have to ask. You can also begin the line with !, like !bulba for a slot that anyone in chat can use with that command.
                     </n-tooltip>
@@ -123,7 +101,10 @@
                 </n-form-item>
                 <!--            -->
                 <n-form-item>
-                    <n-button @click="Save">Save</n-button>
+                    <n-space>
+                        <n-button @click="Save" type="primary">Save</n-button>
+                        <n-button @click="Cancel">Cancel</n-button>
+                    </n-space>
                 </n-form-item>
             </n-form>
         </div>
@@ -134,10 +115,11 @@
 <style scoped>
     .configurator {
         width: 100%;
+        height: 100%;
         position: absolute;
         top: 0;
         left: 0;
-        background-color: rgb(255, 255, 255, 0.5);
+        background-color: rgb(0, 0, 0, 0.5);
         z-index: 1000;
     }
 
@@ -160,5 +142,7 @@
         margin-left: auto;
         margin-right: auto;
         background-color: white;
+        padding: 1em;
+        border-radius: 1em;
     }
 </style>

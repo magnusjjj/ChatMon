@@ -1,11 +1,11 @@
 <script setup>
-    import { NInput, NTooltip, NForm, NFormItem, NInputGroup, NButton, NIcon, NSlider, NCheckbox, NSelect } from 'naive-ui'
+    import { NInput, NTooltip, NForm, NFormItem, NInputGroup, NButton, NIcon, NSlider, NCheckbox, NSelect, NSpace } from 'naive-ui'
     import { SoundFilled } from '@vicons/antd';
-    import { reactive } from 'vue';
+    import { reactive, onUpdated } from 'vue';
     import SaveDataHandler from '../handlers/savedatahandler.js';
     import keylist from '../keyset.json';
 
-    const emit = defineEmits(["SaveCompleted"]);
+    const emit = defineEmits(["SaveCompleted", "Cancelled"]);
 
     const props = defineProps({
         show: Boolean
@@ -19,7 +19,9 @@
         channel: ''
     });
 
+    var settingscopy = {};
     SaveDataHandler.onSettingsChanged(function (settings) {
+        settingscopy = settings;
         Object.assign(savedata, settings);
     });
 
@@ -40,6 +42,10 @@
         SaveDataHandler.SaveSettings(savedata);
     }
 
+    function Cancel() {
+        emit("Cancelled");
+    }
+
     function testVoice() {
         var utterThis = new SpeechSynthesisUtterance("I'm a pokemon!");
         utterThis.volume = (savedata.voice_level ?? 0) / 100;
@@ -53,6 +59,10 @@
     }
 
     var filtered_keylist = keylist.map((row) => { return { "label": row[0] + "-" + row[2], "value": row[1] } });
+
+    onUpdated(() => {
+        Object.assign(savedata, settingscopy);
+    });
 
 </script>
 
@@ -87,7 +97,6 @@
                         The twitch channel
                     </n-tooltip>
                 </n-form-item>
-                
                 <n-form-item label="Shutup keys" >
                     <div>
                         <n-checkbox v-model:checked="savedata.key_ctrl">Ctrl</n-checkbox>
@@ -99,7 +108,10 @@
                               :options="filtered_keylist" />
                 </n-form-item>
                 <n-form-item>
-                    <n-button @click="Save">Save</n-button>
+                    <n-space>
+                        <n-button @click="Save" type="primary">Save</n-button>
+                        <n-button @click="Cancel">Cancel</n-button>
+                    </n-space>
                 </n-form-item>
             </n-form>
         </div>
@@ -110,10 +122,11 @@
 <style scoped>
     .configurator {
         width: 100%;
+        height: 100%;
         position: absolute;
         top: 0;
         left: 0;
-        background-color: rgb(255, 255, 255, 0.5);
+        background-color: rgb(0, 0, 0, 0.5);
         z-index: 1000;
     }
 
@@ -131,11 +144,14 @@
         width: 100%;
     }
 
-            .centeredwindow {
+    .centeredwindow {
         width: 70%;
         margin-left: auto;
         margin-right: auto;
         background-color: white;
+        padding: 1em;
+        border-radius: 1em;
+        padding-bottom: 0.5em;
     }
 
 
