@@ -105,6 +105,7 @@
                     <n-select filterable
                               placeholder="Select key"
                               v-model:value="savedata.key"
+                              placement="top"
                               :options="filtered_keylist" />
                 </n-form-item>
                 <n-form-item>

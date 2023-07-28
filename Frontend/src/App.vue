@@ -16,8 +16,9 @@
         </div>
         <div class="content">
             <PersonSlot v-for="(person, index) in PersonList" :key="index" :person="person" :slotnumber="index" @CharacterPictureClicked="OnCharacterClicked" :message="MessageList[index]" />
-            <PersonConfigurator :show="ShouldShowConfigurator" :personslot="ConfiguratorSlot" :person="ConfiguratorPerson" @SaveCompleted="SavePersonCompleted" @Cancelled="SavePersonCancelled"/>
-            <ChatMonSettings :show="ShouldShowSettings" @SaveCompleted="SaveSettingsCompleted" @Cancelled="SaveSettingsCancelled"/>
+            <PersonConfigurator :show="ShouldShowConfigurator" :personslot="ConfiguratorSlot" :person="ConfiguratorPerson" @SaveCompleted="SavePersonCompleted" @Cancelled="SavePersonCancelled" />
+            <ChatMonSettings :show="ShouldShowSettings" @SaveCompleted="SaveSettingsCompleted" @Cancelled="SaveSettingsCancelled" />
+
         </div>
         <div class="ShowSettingsButton" v-if="ShouldShowUI">
             <n-button @click="ShowSettings" size="large" type="primary">
@@ -26,12 +27,16 @@
                     <n-icon><setting-outlined /></n-icon>
                 </template>
             </n-button>
+            <n-button size="large" @click="ShowAbout" type="primary">
+                About
+                <template #icon>
+                    <n-icon><question-outlined /></n-icon>
+                </template>
+            </n-button>
 
-            <ChatMonAbout />
             <TwitchStatus />
-
         </div>
-
+        <ChatMonAbout :show="ShouldShowAbout" @Close="CloseAbout" />
     </div>
 </template>
 
@@ -60,7 +65,7 @@
     import SaveDataHandler from './handlers/savedatahandler.js';
     import ChatMonSettings from './components/ChatMonSettings.vue';
 
-    import { SettingOutlined, DragOutlined, CloseOutlined } from '@vicons/antd';
+    import { SettingOutlined, DragOutlined, CloseOutlined, QuestionOutlined } from '@vicons/antd';
     import { NButton, NIcon } from 'naive-ui';
     import ChatHandler from './handlers/chathandler.js';
     import TTSHandler from './handlers/ttshandler';
@@ -76,6 +81,7 @@
 
     const ShouldShowConfigurator = ref(false);
     const ShouldShowSettings = ref(false);
+    const ShouldShowAbout = ref(false);
     
 
     function OnCharacterClicked(slotnumber) {
@@ -104,6 +110,14 @@
 
     function SaveSettingsCancelled() {
         ShouldShowSettings.value = false;
+    }
+
+    function ShowAbout() {
+        ShouldShowAbout.value = true;
+    }
+
+    function CloseAbout() {
+        ShouldShowAbout.value = false;
     }
 
     SaveDataHandler.onCharacterChanged((slot, data) => {
@@ -159,13 +173,22 @@
         margin-left: 1em;
         float: left;
     }
+
+    html, body, #app {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+    }
 </style>
 
 <style scoped="true">
     .mainwindow {
-       
+       position: relative;
+       height: 100%;
+       width: 100%;
     }
-
 
     .mainwindow:hover .ShowSettingsButton {
         /*display: block;
@@ -177,6 +200,11 @@
         position: relative;
         top: 1em;
         /*display: none;*/
+    }
+
+    .ShowSettingsButton button {
+        margin-left: 1em;
+        margin-bottom: 0.5em;
     }
 
     .close {

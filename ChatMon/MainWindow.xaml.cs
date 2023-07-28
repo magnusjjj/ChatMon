@@ -147,7 +147,16 @@ namespace ChatMon
                     webView.Source = new Uri("https://nuzlocke.example/index.html");
 #endif
             webView.CoreWebView2.WebMessageReceived += CoreWebView2_WebMessageReceived; // If the code wants to poke us for whatever reason. Not used yet.
+            webView.CoreWebView2.NewWindowRequested += CoreWebView2_NewWindowRequested;
+        }
 
+        private void CoreWebView2_NewWindowRequested(object? sender, CoreWebView2NewWindowRequestedEventArgs e)
+        {
+            if (e.Uri.StartsWith("https://twitch.tv/"))
+            {
+                e.Handled = true;
+                Process.Start("explorer", e.Uri);
+            }
         }
 
         private async void CoreWebView2_WebMessageReceived(object? sender, CoreWebView2WebMessageReceivedEventArgs e)

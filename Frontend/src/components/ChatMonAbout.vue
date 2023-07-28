@@ -1,43 +1,41 @@
 <script setup>
     import { NButton, NIcon } from 'naive-ui'
-    import { QuestionOutlined, CloseOutlined } from '@vicons/antd';
-    import { ref } from 'vue';
+    import { CloseOutlined } from '@vicons/antd';
+    import ChatMonLogo from './ChatMonLogo';
+    import { defineEmits } from 'vue';
     
-    var windowopen = ref(false);
+    const emit = defineEmits(["Close"]);
+    const props = defineProps({show: Boolean});
 
-    function openwindow(){{
-        windowopen.value = true;
-    }}
 
     function closewindow(){{
-        windowopen.value = false;
+        emit("Close");
     }}
 </script>
 
 <template>
-    <n-button size="large" @click="openwindow" type="primary">
-        About
-        <template #icon>
-            <n-icon><question-outlined /></n-icon>
-        </template>
-    </n-button>
-    <div class="aboutwindow" v-if="windowopen">
-        <h2>ChatMon, made by <a href="https://twitch.tv/slightlytango">SlightlyTango</a></h2>
-        <h3>based on an idea by and commisioned for <a href="https://twitch.tv/skylordzoey">SkylordZoey</a></h3>
-        Licensed under the MIT license, apart from assets and libraries, which are licensed as below.
-        <br />
-        <br />
-        record.svg and settings.svg are from google material, and are licensed under Apache 2.0.<br />
-        pokeball.svg is made by Andreuvv from wikipedia, and is licensed under Creative Commons Attribution-Share Alike 4.0 International.<br />
-        The pokemon font file is tagged as being made by Creative Commons Attribution Share Alike , made by KaelinT.<br />
-        You can find the licenses for the javascript libraries used in <a href="/chunk-vendors.licenses.txt" target="_blank">this text file</a>.
+    <div class="aboutwindow" v-if="props.show">
+        <div class="scrollboxoutside">
+            <div class="scrollboxinside">
+                <ChatMonLogo />
+                <h2>made by <a href="https://twitch.tv/slightlytango" target="_blank">SlightlyTango</a></h2>
+                <h3>based on an idea by and commisioned for <a href="https://twitch.tv/skylordzoey" target="_blank">SkylordZoey</a></h3>
+                Licensed under the MIT license, apart from assets and libraries, which are licensed as below.
+                <br />
+                <br />
+                record.svg and settings.svg are from google material, and are licensed under Apache 2.0.<br />
+                pokeball.svg is made by Andreuvv from wikipedia, and is licensed under Creative Commons Attribution-Share Alike 4.0 International.<br />
+                The pokemon font file is tagged as being made by Creative Commons Attribution Share Alike , made by KaelinT.<br />
+                You can find the licenses for the javascript libraries used in <a href="/chunk-vendors.licenses.txt" target="_blank">this text file</a>.
 
-        <n-button size="large" @click="closewindow" type="primary">
-            Close
-            <template #icon>
-                <n-icon><close-outlined /></n-icon>
-            </template>
-        </n-button>
+                <n-button size="large" @click="closewindow" type="primary">
+                    Close
+                    <template #icon>
+                        <n-icon><close-outlined /></n-icon>
+                    </template>
+                </n-button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -48,11 +46,28 @@
 
     .aboutwindow {
         position: fixed;
-        top: 1em;
-        left: 1em;
-        width: 80%;
-        height: 80%;
-        background-color: rgba(255,255,255,0.9);
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%; 
+        background-color: rgba(0,0,0,0.5);
         z-index: 99999;
+
+    }
+    .scrollboxoutside {
+        background-color: white;
+        width: 80%;
+        height: 60%; /* I don't know why this is calculated wrong, but here we are */
+        position: relative;
+        top: 5%;
+        left: 5%;
+        padding: 1em;
+        border-radius: 1em;
+    }
+
+    .scrollboxinside {
+        overflow-y: scroll;
+        width: 100%;
+        height: 100%;
     }
 </style>
