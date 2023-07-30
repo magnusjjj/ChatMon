@@ -89,7 +89,7 @@
                         </n-button>
                     </n-input-group>
                 </n-form-item>
-                <n-form-item label="TTS Chatmessage Prefix"  :feedback="validation.speak_prefix" :validation-status="validation.speak_prefix ? 'warning' : ''">
+                <n-form-item label="TTS Chatmessage Prefix" :feedback="validation.speak_prefix" :validation-status="validation.speak_prefix ? 'warning' : ''">
                     <n-tooltip trigger="hover">
                         <template #trigger>
                             <n-input v-model:value="savedata.speak_prefix" />
@@ -97,17 +97,21 @@
                         The twitch channel
                     </n-tooltip>
                 </n-form-item>
-                <n-form-item label="Shutup keys" >
+                <n-form-item label="Shutup keys">
                     <div>
                         <n-checkbox v-model:checked="savedata.key_ctrl">Ctrl</n-checkbox>
                         <n-checkbox v-model:checked="savedata.key_alt">Alt</n-checkbox>
                     </div>
-                    <n-select filterable
-                              placeholder="Select key"
-                              v-model:value="savedata.key"
-                              placement="top"
-                              :options="filtered_keylist" />
+                    <div>
+                        <n-select filterable
+                                  placeholder="Select key"
+                                  v-model:value="savedata.key"
+                                  placement="top"
+                                  :options="filtered_keylist" />
+                    </div>
+
                 </n-form-item>
+                <div style="margin-top: -1em; margin-bottom: -1.5em;">If the keybind doesn't seem to work, try other keybinds. Some, like for instance *just* binding F12, are blocked by the operating system or other applications.</div>
                 <n-form-item>
                     <n-space>
                         <n-button @click="Save" type="primary">Save</n-button>
