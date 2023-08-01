@@ -59,7 +59,7 @@
     .message {
         border: 0.2em solid #DDDDDD;
         border-radius: 2em;
-        box-shadow: 1em 1em 1em #222222;
+        box-shadow: 0.5em 0.5em 0.5em #AAA;
         background-color: #EEEEEE;
         padding: 0.5em;
         font-family: "Pokemon R/S", Arial, Helvetica, sans-serif;
