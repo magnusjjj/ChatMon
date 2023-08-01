@@ -152,11 +152,12 @@ namespace ChatMon
 
         private void CoreWebView2_NewWindowRequested(object? sender, CoreWebView2NewWindowRequestedEventArgs e)
         {
-            if (e.Uri.StartsWith("https://twitch.tv/"))
+            if (e.Uri.StartsWith("https://twitch.tv/") || e.Uri.StartsWith("https://www.patreon.com/SlightlyTango") || e.Uri.StartsWith("https://github.com/magnusjjj/ChatMon"))
             {
                 e.Handled = true;
                 Process.Start("explorer", e.Uri);
             }
+
         }
 
         private async void CoreWebView2_WebMessageReceived(object? sender, CoreWebView2WebMessageReceivedEventArgs e)
