@@ -13,6 +13,8 @@ ChatMon is created by SlightlyTango, based on an idea by and commissioned by Sky
 
 Becoming a patron really does help a whole lot <3.
 
+Having troubles? Join our discord server, https://discord.gg/Z7wHzWWVuU
+
 ## Features
 - An interface and setup that's easy enough to use that even people that have any streaming experience can set it up in minutes.
 - All chatters can have different voices
