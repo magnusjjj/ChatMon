@@ -3,7 +3,8 @@
 
 ChatMon lets your viewers talk through your pokemon roster.
 
-![image](https://github.com/magnusjjj/ChatMon/assets/525731/23fcbde9-2065-4904-be8c-cdebf0072b1c)
+<img src="https://github.com/magnusjjj/ChatMon/assets/525731/82b75fce-23ca-496f-927e-0fd8ccafa660"/>
+
 
 ## About
 
