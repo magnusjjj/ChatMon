@@ -36,4 +36,14 @@ That's all! You should now see the program with all it's glorious transparent ba
 
 ![image](https://github.com/magnusjjj/ChatMon/assets/525731/f7b473d9-36b9-47a4-9240-dace192dcd19)
 
+### FAQ, questions that people have asked, and some nobody has asked so far
 
+#### How do I add more voices?
+You need to go to speech settings in windows, scroll all the way down, and then add as many voices as you like (go wild!) and then reboot.
+Sorry for the reboot, literally a windows thing that can't be fixed.
+
+#### The code quality is rubbish mate
+That's not really a question. It is true though. Learned more Vue3 and about webpack than I wanted. There is some duplicate code, lack of comments, a lot of things that just don't quite fit right and is done in multiple different ways in the same program. But, I had spent *way* too much time coding, and had to release sometime. Post-launch I will take a pass over everything and refactor away before starting to add features :).
+
+#### How do I build this?
+If you are trying to build this, poke me on discord, and we can go through it step by step, so I can document any troubles you are facing. Would be invaluable.
