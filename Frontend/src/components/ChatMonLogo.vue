@@ -6,10 +6,6 @@
 
 </template>
 
-<script setup>
-
-</script>
-
 <style>
     .logo {
         position: relative;

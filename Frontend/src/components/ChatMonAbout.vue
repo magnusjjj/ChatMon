@@ -1,7 +1,5 @@
 <script setup>
-    import { NButton, NIcon } from 'naive-ui'
     import { CloseOutlined } from '@vicons/antd';
-    import ChatMonLogo from './ChatMonLogo';
     import { defineEmits } from 'vue';
     
     const emit = defineEmits(["Close"]);

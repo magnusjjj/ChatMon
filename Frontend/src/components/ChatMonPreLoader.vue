@@ -27,14 +27,12 @@
 
 <script setup>
     import {ref, reactive} from 'vue';
-    import { NProgress } from 'naive-ui';
     import WebView2IntegrationHandler from '../handlers/webview2integrationhandler';
-    import ChatMonLogo from './ChatMonLogo';
 
     const message = ref("");
     const percentage = reactive([0, 0]);
 
-
+    // We are listening to the C# backend to update the progress bar
     WebView2IntegrationHandler.onMessage('ChatMonProgress', (text) => {
         percentage[0] = text.percent1;
         percentage[1] = text.percent2;
