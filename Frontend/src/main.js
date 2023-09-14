@@ -1,7 +1,8 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import ChatMonWindow from './components/ChatMonWindow.vue'
 import ChatMonAbout from './components/ChatMonAbout.vue';
-import ChatMonLogo from './ChatMonLogo.vue';
+import ChatMonLogo from './components/ChatMonLogo.vue';
 import ChatMonPreLoader from './components/ChatMonPreLoader.vue';
 import ChatMonSettings from './components/ChatMonSettings.vue';
 import PersonConfigurator from './components/PersonConfigurator.vue';
@@ -19,6 +20,7 @@ app.component('PersonSlot', PersonSlot);
 app.component('ChatMonPreLoader', ChatMonPreLoader);
 app.component('PersonConfigurator', PersonConfigurator);
 app.component('TwitchStatus', TwitchStatus);
+app.component('ChatMonWindow', ChatMonWindow);
 app.component('ChatMonAbout', ChatMonAbout);
 app.component('ChatMonSettings', ChatMonSettings);
 app.component('ChatMonLogo', ChatMonLogo);
