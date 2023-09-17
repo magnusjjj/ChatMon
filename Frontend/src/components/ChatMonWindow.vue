@@ -1,4 +1,24 @@
+<script setup>
+    const props = defineProps({
+        title: String
+    })
+</script>
+
 <template>
+    <n-modal v-show="true" :block-scroll="false">
+        <n-card style="max-width: 80%; max-height: 60%; overflow-y: scroll; position: fixed; top: 5%; left: 10%;" :title="props.title">
+            <template #header-extra>
+                <slot name="header"></slot>
+            </template>
+            <slot></slot>
+            <template #action>
+                <slot name="action"></slot>
+            </template>
+        </n-card>
+    </n-modal>
+</template>
+
+<!--<template>
     <div class="configurator" v-if="props.show">
         <div class="centeredwindow">
             <slot></slot>
@@ -33,3 +53,4 @@
         padding-bottom: 0.5em;
     }
 </style>
+-->

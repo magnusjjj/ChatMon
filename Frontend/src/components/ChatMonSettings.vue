@@ -1,5 +1,5 @@
 <template>
-    <ChatMonWindow :show="props.show">
+    <ChatMonWindow :show="props.show" title="Settings">
         <n-form :show-feedback="true">
             <n-form-item label="Twitch channel name" :feedback="validation.channel" :validation-status="validation.channel ? 'warning' : ''">
                 <n-tooltip trigger="hover">
@@ -8,6 +8,9 @@
                     </template>
                     The twitch channel. You can paste in your url.
                 </n-tooltip>
+            </n-form-item>
+            <n-form-item label="Game">
+                <n-select placeholder="Select game" v-model:value="savedata.gametype" :options="gametypes" />
             </n-form-item>
             <n-form-item label="TTS Voice level">
                 <n-input-group>
@@ -35,21 +38,23 @@
                 </div>
                 <div>
                     <n-select filterable
-                                placeholder="Select key"
-                                v-model:value="savedata.key"
-                                placement="top"
-                                :options="filtered_keylist" />
+                              placeholder="Select key"
+                              v-model:value="savedata.key"
+                              placement="top"
+                              :options="filtered_keylist" />
                 </div>
 
             </n-form-item>
             <div style="margin-top: -1em; margin-bottom: -1.5em;">If the keybind doesn't seem to work, try other keybinds. Some, like for instance *just* binding F12, are blocked by the operating system or other applications.</div>
+        </n-form>
+        <template #action>
             <n-form-item>
                 <n-space>
                     <n-button @click="Save" type="primary">Save</n-button>
                     <n-button @click="Cancel">Cancel</n-button>
                 </n-space>
             </n-form-item>
-        </n-form>
+        </template>
     </ChatMonWindow>
 </template>
 
@@ -60,17 +65,15 @@
     import keylist from '../keyset.json';
 
     const emit = defineEmits(["SaveCompleted", "Cancelled"]);
+    const gametypes = [{ value: "default", label: "Default (up to gen 7 pokemon)" }, { value: "infinitefusion", label: "Pokemon Infinite Fusion" }];
+
 
     const props = defineProps({
         show: Boolean
     })
 
     var savedata = reactive({
-        voice_level: 50,
-        key: 0,
-        key_alt: false,
-        key_ctrl: false,
-        channel: ''
+
     });
 
     var settingscopy = {};

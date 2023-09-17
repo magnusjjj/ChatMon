@@ -15,10 +15,25 @@ export default class SaveDataHandler {
         key: (value) => { return null },
     };
 
+    static defaultSettings = {
+        voice_level: 50,
+        key: 0,
+        key_alt: false,
+        key_ctrl: false,
+        channel: '',
+        gametype: 'default'
+    };
+
     static {
         console.log("First loading settings");
         this.settingsChangedList = Array();
         this.__settings = JSON.parse(window.localStorage.getItem("settings")) ?? {};
+        for (const key in this.defaultSettings) { 
+            if (!(key in this.__settings)) {
+                this.__settings[key] = this.defaultSettings[key];
+            }
+        }
+
         this.settingsChangedList.forEach((eventhandler) => eventhandler(this.__settings));
         this.validateSettings();
         
@@ -46,9 +61,10 @@ export default class SaveDataHandler {
     }
 
     static SaveSettings(settings) {
+        const oldsettings = this.__settings;
         window.localStorage.setItem("settings", JSON.stringify(settings));
         this.__settings = JSON.parse(JSON.stringify(settings)); // Make sure to strip any vue proxy nonsense
-        this.settingsChangedList.forEach((eventhandler) => eventhandler(settings));
+        this.settingsChangedList.forEach((eventhandler) => eventhandler(settings, oldsettings));
         this.validateSettings();
     }
 

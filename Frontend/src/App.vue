@@ -77,6 +77,13 @@
         ShouldShowUI.value = true;
     });
 
+
+    // When the user saves settings, we need to tell the C# backend about it, mostly for the keybind to shut up a pokemon
+    // This needs to be this far up, the preloader needs to know what to do.
+    SaveDataHandler.onSettingsChanged(function (settings) {
+        WebView2IntegrationHandler.SendMessage({ "type": "ChatMonSettings", "settings": settings });
+    });
+
     // When we are done with setting everything else up, it's time to show our nifty preloader.
     // We send a message to the C# backend to start downloading the pictures for all the pokemon, all that jazz.
     WebView2IntegrationHandler.SendMessage({"type": "StartPreloader"});
@@ -93,10 +100,6 @@
         PersonList.splice(slot, 1, data);
     });
 
-    // When the user saves settings, we need to tell the C# backend about it, mostly for the keybind to shut up a pokemon
-    SaveDataHandler.onSettingsChanged(function (settings) {
-        WebView2IntegrationHandler.SendMessage({ "type": "ChatMonSettings", "settings": settings })
-    });
 
     // If there is an error in the stored data for settings, show the settings popup
     SaveDataHandler.onValidationError(() => {

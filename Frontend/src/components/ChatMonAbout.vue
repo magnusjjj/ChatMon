@@ -33,13 +33,14 @@
         You can find the licenses for the javascript libraries used in <a href="/chunk-vendors.licenses.txt" target="_blank">this text file</a>.<br />
         <br />
         You can find the source code for ChatMon at <a href="https://github.com/magnusjjj/ChatMon" target="_blank">the github.</a>
-
-        <n-button size="large" @click="closewindow" type="primary">
-            Close
-            <template #icon>
-                <n-icon><close-outlined /></n-icon>
-            </template>
-        </n-button>
+        <template #action>
+            <n-button size="large" @click="closewindow" type="primary">
+                Close
+                <template #icon>
+                    <n-icon><close-outlined /></n-icon>
+                </template>
+            </n-button>
+        </template>
     </ChatMonWindow>
 </template>
 

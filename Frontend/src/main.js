@@ -10,7 +10,7 @@ import PersonSlot from './components/PersonSlot.vue';
 import TwitchStatus from './components/TwitchStatus.vue';
 
 
-import { NButton, NIcon, NProgress, NInput, NTooltip, NForm, NFormItem, NInputGroup, NSlider, NCheckbox, NSelect, NSpace } from 'naive-ui'; // Said buttons
+import { NButton, NIcon, NProgress, NInput, NTooltip, NForm, NFormItem, NInputGroup, NSlider, NCheckbox, NSelect, NSpace, NModal, NCard } from 'naive-ui'; // Said buttons
 
 var app = createApp(App);
 //app.config.globalProperties.chrome = {};
@@ -36,6 +36,8 @@ app.component('NSlider', NSlider);
 app.component('NCheckbox', NCheckbox);
 app.component('NSelect', NSelect);
 app.component('NSpace', NSpace);
+app.component('NModal', NModal);
+app.component('NCard', NCard);
 
 app.mount('#app')
 

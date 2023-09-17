@@ -6,8 +6,8 @@ module.exports = defineConfig({
     outputDir: path.resolve(__dirname, "../publish/html/"),
     devServer: {
         static: {
-            directory: path.join(__dirname, '../publish/html/')
-        },
+            directory: path.join(__dirname, '../publish/html/'),
+        }, a
     },
     configureWebpack: {
         plugins: [
@@ -19,6 +19,6 @@ module.exports = defineConfig({
                     return packageName === 'frontend';
                 }
             })
-        ]
+        ],
     }
 })
