@@ -1,7 +1,7 @@
 <template>
     <div class="logo">
         <h1>ChatMon</h1>
-        <img src="assets/pokeball.svg" class="pokeball" />
+        <img src="/assets/pokeball.svg" class="pokeball" />
     </div>
 
 </template>

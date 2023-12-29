@@ -80,8 +80,12 @@
 
     // When the user saves settings, we need to tell the C# backend about it, mostly for the keybind to shut up a pokemon
     // This needs to be this far up, the preloader needs to know what to do.
-    SaveDataHandler.onSettingsChanged(function (settings) {
+    SaveDataHandler.onSettingsChanged(function (settings, oldsettings) {
         WebView2IntegrationHandler.SendMessage({ "type": "ChatMonSettings", "settings": settings });
+        if (settings.gametype != oldsettings.gametype) { // If we have changed the game, we need to restart the loader.
+            ShouldShowPreloader.value = true;
+            WebView2IntegrationHandler.SendMessage({ "type": "StartPreloader" });
+        }
     });
 
     // When we are done with setting everything else up, it's time to show our nifty preloader.
@@ -107,11 +111,17 @@
     });
 
     // Time for the main course, what we do if someone sends a chatmessage
-    ChatHandler.onTalk((slot, displayname, message) => {
-        if (displayname != null && displayname != PersonList[slot].displayname) {
-            // Is it something like !bob, or a !poke? If the latter, change the visible username to how the username looks in chat. For example, SlightlyTango instead of slightlytango
-            PersonList[slot].displayname = displayname;
-            SaveDataHandler.SaveCharacter(slot, PersonList[slot]); // Save the change for if we want to restart chatmon
+    ChatHandler.onTalk((slot, displayname, message, tags) => {
+        console.log(PersonList[slot].displaynames);
+        if (displayname != null) {
+            for (const key in PersonList[slot].displaynames) {
+                console.log(key, PersonList[slot].displaynames[key]);
+                if (key == PersonList[slot].displaynames[key] && key == tags.username) {
+                    console.log("Updating ", key, PersonList[slot].displaynames[key])
+                    PersonList[slot].displaynames[key] = displayname;
+                    SaveDataHandler.SaveCharacter(slot, PersonList[slot]); // Save the change for if we want to restart chatmon
+                }
+            }
         }
 
         MessageList[slot] = message; // Display the message
@@ -137,7 +147,7 @@
 <style>
     @font-face {
         font-family: "Pokemon R/S";
-        src: url("/public/assets/pokemon_fire_red.woff") format('woff');
+        src: url("/assets/pokemon_fire_red.woff") format('woff');
     }
 
     .dragmeh {

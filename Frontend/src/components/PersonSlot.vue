@@ -4,13 +4,18 @@
             <img :src="image" />
             <div class="material-icons charactersettings"></div>
         </div>
-        <div class="nametag">{{person.displayname}}</div>
+        <div class="nametag">
+            <div v-for="(displayname, index) in person.displaynames" v-bind:key="index">
+                {{displayname}}
+            </div>
+        </div>
         <div class="message" v-if="shouldshowmessage">{{message}}</div>
     </div>
 </template>
 
 <script setup>
-    import { computed, ref, onUpdated, watch } from 'vue';
+    import { ref, onUpdated, watch, onMounted } from 'vue';
+    import GameHandler from '../handlers/gamehandler';
 
     const props = defineProps({
         person: Object,
@@ -20,10 +25,7 @@
 
     var message = ref(props.message);
 
-    const image = computed(() => {
-        console.log(props.person.pokemon);
-        return props.person.pokemon && props.person.pokemon != 0 ? "game/pokemon/pokemon.json-master/thumbnails/" + props.person.pokemon.toString().padStart(3, '0') + ".png" : "assets/pokeball.svg";
-    });
+    const image = ref("");
 
     const emit = defineEmits(["CharacterPictureClicked"]);
 
@@ -44,7 +46,13 @@
         shouldshowmessage.value = message.value != "";
     });
 
-    onUpdated(() => {
+    onMounted(async () => {
+        image.value = await GameHandler.currentGame().resolveImage(props.person.pokemon);
+    });
+
+    onUpdated(async () => {
+        console.log("Updating person!");
+        image.value = await GameHandler.currentGame().resolveImage(props.person.pokemon);
         /*console.log("Updating slot");
         clearTimeout(hidingtimeout);
         hidingtimeout = setTimeout(() => { shouldshowmessage.value = false; }, 10000);
@@ -107,7 +115,7 @@
         left: 0;
         height: 100%;
         width: 100%;
-        background-image: url("/public/assets/settings.svg");
+        background-image: url("/assets/settings.svg");
         background-repeat: no-repeat;
         background-size: 100%;
     }

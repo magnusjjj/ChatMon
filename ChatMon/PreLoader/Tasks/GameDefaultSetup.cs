@@ -10,7 +10,7 @@ namespace ChatMon.PreLoader.Tasks
     {
         public override async Task Do()
         {
-            await new Download("https://github.com/fanzeyi/pokemon.json/archive/refs/heads/master.zip", "pokemonpictures.zip", "html/game/pokemon/", 50).Do();
+            await new Download("https://github.com/fanzeyi/pokemon.json/archive/refs/heads/master.zip", StaticSettings.DOWNLOAD_DIRECTORY + "pokemonpictures.zip", StaticSettings.DOWNLOAD_DIRECTORY + "/game/pokemon/", 50).Do();
             SendProgress("Completely done!", 100, 100);
             SendMessage(new
                 {

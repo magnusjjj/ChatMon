@@ -20,12 +20,17 @@ namespace ChatMon.PreLoader.Tasks
             co.OnProgress = (string message) =>
             {
                 if(message.Trim().Length > 0) {
-                    SendProgress("Cloning images! This downloads a massive amount of files! Do not turn off ChatMon or you will have to delete files manually!\n" + message, 50, 50);                
+                    SendProgress("Fetching the pokedex!\n" + message, 50, 50);                
                 }
                 return true;
             };
 
-            Repository.Clone("https://github.com/magnusjjj/ChatMonFusion", "./html/game/infinitefusion/", co);
+            if (!File.Exists(StaticSettings.DOWNLOAD_DIRECTORY + "ChatMonFusion_clone_done"))
+            {
+                try { Directory.Delete(StaticSettings.DOWNLOAD_DIRECTORY + "infinitefusion/", true); } catch { };
+                Repository.Clone("https://github.com/magnusjjj/ChatMonFusion", StaticSettings.DOWNLOAD_DIRECTORY + "infinitefusion/", co);
+                File.Create(StaticSettings.DOWNLOAD_DIRECTORY + "ChatMonFusion_clone_done");
+            }
 
             SendProgress("Completely done!", 100, 100);
             SendMessage(new

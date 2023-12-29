@@ -70,7 +70,7 @@ export default class SaveDataHandler {
 
     static onSettingsChanged(func) {
         this.settingsChangedList.push(func);
-        func(this.__settings);
+        func(this.__settings, this.__settings);
     }
 
     static validateSettings() {

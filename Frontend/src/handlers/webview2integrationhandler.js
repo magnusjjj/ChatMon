@@ -3,7 +3,7 @@ export default class WebView2IntegrationHandler {
 
     static {
         window.chrome.webview.addEventListener('message', (message) => {
-            console.log("Got message from webview2", message)
+//            console.log("Got message from webview2", message)
             if (message.data.type in this.onmessagehandlers) {
                 this.onmessagehandlers[message.data.type].forEach((callback) => callback(message.data));
             }

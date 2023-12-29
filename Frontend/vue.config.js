@@ -7,7 +7,7 @@ module.exports = defineConfig({
     devServer: {
         static: {
             directory: path.join(__dirname, '../publish/html/'),
-        }, a
+        },
     },
     configureWebpack: {
         plugins: [

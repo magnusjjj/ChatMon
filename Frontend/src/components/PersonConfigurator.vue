@@ -4,6 +4,7 @@
     import { ref, reactive, onUpdated } from 'vue';
     import SaveDataHandler from '../handlers/savedatahandler.js';
     import TTSHandler from '../handlers/ttshandler.js';
+import GameHandler from '../handlers/gamehandler.js';
 
     //import { defineComponent } from 'vue';
     const props = defineProps({
@@ -27,7 +28,12 @@
 
     function Save() {
         if (props.person.username != savedata.username) {
-            savedata.displayname = savedata.username;
+            var usernames = savedata.username.split('/');
+            savedata.displaynames = {};
+            usernames.forEach((username) => {
+                console.log(username);
+                savedata.displaynames[username] = username;
+            });
         }
         SaveDataHandler.SaveCharacter(props.personslot, savedata);
         emit("SaveCompleted", props.personslot, savedata);
@@ -39,15 +45,9 @@
 
     const pokedex = ref([]);
 
-    fetch('/game/pokemon/pokemon.json-master/pokedex.json')
-        .then(response => response.json())
-        .then(data => {
-            pokedex.value = data.map(line => {
-                return ({ "value": line.id, "label": line.name.english });
-            });
-            pokedex.value.unshift({ "value": "0", "label": "None" });
-        });
-
+    GameHandler.currentGame().personlist().then((personlist) => {
+        pokedex.value = personlist;
+    });
 
     onUpdated(() => {
         savedata.username = props.person.username ?? "";

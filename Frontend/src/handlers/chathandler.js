@@ -1,5 +1,6 @@
+import { username } from 'tmi.js/lib/utils';
 import SaveDataHandler from './savedatahandler';
-const tmi = require('tmi.js');
+import tmi from 'tmi.js';
 
 export default class ChatHandler {
     static client = null;
@@ -92,15 +93,21 @@ export default class ChatHandler {
         // If the command starts with the name configured in the settings (configuration.js) as speak_prefix, use the username to look up who to speak as
         if (command == ChatHandler.__settings.speak_prefix) {
             for (const slot in ChatHandler.__characters) {
-                if (tags.username == ChatHandler.__characters[slot].username) {
-                    character_index = slot;
-                    is_command = false;
-                }
+                var usernames = ChatHandler.__characters[slot].username.split('/');
+
+                usernames.forEach((username) => {
+                    if (tags.username == username.trim()) {
+                        character_index = slot;
+                        is_command = false;
+                    }
+                });
             }
 
             if (is_command !== false) {
                 return;
             }
+
+
         } else if(command[0] == '!'){ // Else, if we think that it's a command like !bill
             for (const slot in ChatHandler.__characters) {
                 if (command == ChatHandler.__characters[slot].username) {
@@ -116,11 +123,11 @@ export default class ChatHandler {
             return;
         }
 
-
         console.log(is_command, tags, restofmessage);
         ChatHandler.onTalkList.forEach((callback) => {
-            callback(character_index, !is_command ? tags["display-name"] : null, restofmessage);
+            callback(character_index, !is_command ? tags["display-name"] : null, restofmessage, tags);
         });
+
     }
 
     static Test() {

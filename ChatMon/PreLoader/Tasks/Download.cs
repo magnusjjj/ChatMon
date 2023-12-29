@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Threading;
 
 namespace ChatMon.PreLoader.Tasks
 {
@@ -76,6 +77,7 @@ namespace ChatMon.PreLoader.Tasks
                 {
                     MessageBox.Show("The zip file downloaded was malformed. This usually means that the download was aborted. Will retry.");
                     File.Delete(tempname);
+                    await Task.Delay(10000);
                     await Do();
                 }
 
