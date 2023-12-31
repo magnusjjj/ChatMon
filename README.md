@@ -23,6 +23,8 @@ Having troubles? Join our discord server, https://discord.gg/Z7wHzWWVuU
 - It only requires a channel name as a setting, it doesn't require any tokens or shenanigans.
 - The window is transparent, and hides all buttons when the window is not on top. Just click in the window again to show all the buttons.
 - Pokemon up to and including gen 7.
+- Alpha support for Infinite Fusion
+- Alpha support for vertical mode
 
 ## Setup
 ### The program itself
