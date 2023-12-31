@@ -4,7 +4,7 @@
     import { ref, reactive, onUpdated } from 'vue';
     import SaveDataHandler from '../handlers/savedatahandler.js';
     import TTSHandler from '../handlers/ttshandler.js';
-import GameHandler from '../handlers/gamehandler.js';
+    import GameHandler from '../handlers/gamehandler.js';
 
     //import { defineComponent } from 'vue';
     const props = defineProps({

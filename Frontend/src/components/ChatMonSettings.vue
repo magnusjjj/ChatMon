@@ -28,8 +28,11 @@
                     <template #trigger>
                         <n-input v-model:value="savedata.speak_prefix" />
                     </template>
-                    The twitch channel
+                    The thing to start a chat with, like !poke
                 </n-tooltip>
+            </n-form-item>
+            <n-form-item label="Orientation" :feedback="validation.orientation" :validation-status="validation.orientation ? 'warning' : ''">
+                <n-select :options="orientation_list" v-model:value="savedata.orientation" />
             </n-form-item>
             <n-form-item label="Shutup keys">
                 <div>
@@ -66,7 +69,7 @@
 
     const emit = defineEmits(["SaveCompleted", "Cancelled"]);
     const gametypes = [{ value: "default", label: "Default (up to gen 7 pokemon)" }, { value: "infinitefusion", label: "Pokemon Infinite Fusion" }];
-
+    const orientation_list = [{ value: "horizontal", label: "Horizontal" }, {value: "vertical", label: "Vertical"}];
 
     const props = defineProps({
         show: Boolean

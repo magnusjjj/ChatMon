@@ -1,5 +1,5 @@
 <template>
-    <div class="character">
+    <div :class="{character: true, vertical: savedata.orientation == 'vertical'}">
         <div class="characterpicture" @click="ShowConfigurator(slotnumber)">
             <img :src="image" />
             <div class="material-icons charactersettings"></div>
@@ -14,8 +14,9 @@
 </template>
 
 <script setup>
-    import { ref, onUpdated, watch, onMounted } from 'vue';
+    import { ref, onUpdated, watch, onMounted, reactive } from 'vue';
     import GameHandler from '../handlers/gamehandler';
+    import SaveDataHandler from '../handlers/savedatahandler';
 
     const props = defineProps({
         person: Object,
@@ -51,14 +52,17 @@
     });
 
     onUpdated(async () => {
-        console.log("Updating person!");
         image.value = await GameHandler.currentGame().resolveImage(props.person.pokemon);
-        /*console.log("Updating slot");
-        clearTimeout(hidingtimeout);
-        hidingtimeout = setTimeout(() => { shouldshowmessage.value = false; }, 10000);
-        
-        message.value = props.message;
-        shouldshowmessage.value = message.value != "";*/
+    });
+
+    var savedata = reactive({
+
+    });
+
+    var settingscopy = {};
+    SaveDataHandler.onSettingsChanged(function (settings) {
+        settingscopy = settings;
+        Object.assign(savedata, settings);
     });
 </script>
 
@@ -72,6 +76,9 @@
         padding: 0.5em;
         font-family: "Pokemon R/S", Arial, Helvetica, sans-serif;
         font-size: 1.5em;
+        position: absolute;
+        top: 1em;
+        right: 100%;
     }
 
     .nametag {
@@ -88,6 +95,15 @@
         width: calc(100% / 6);
         float: left;
         position: relative;
+    }
+
+    .vertical {
+        float: right;
+        clear: both;
+    }
+
+    .vertical .nametag {
+        padding: 0.1em;
     }
 
     .characterpicture {

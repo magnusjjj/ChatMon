@@ -13,6 +13,7 @@ export default class SaveDataHandler {
         key_ctrl: (value) => { return null }, // The following three settings are for what key combination to hit to silence TTS and remove all messages.
         key_alt: (value) => { return null },
         key: (value) => { return null },
+        orientation: (value) => { return null }
     };
 
     static defaultSettings = {
@@ -21,7 +22,8 @@ export default class SaveDataHandler {
         key_alt: false,
         key_ctrl: false,
         channel: '',
-        gametype: 'default'
+        gametype: 'default',
+        orientation: 'horizontal'
     };
 
     static {

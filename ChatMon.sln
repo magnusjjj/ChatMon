@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.5.33209.295
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatMon", "ChatMon\ChatMon.csproj", "{F0FEA73B-D1F8-4F6A-978C-90D7224A58B9}"
-	ProjectSection(ProjectDependencies) = postProject
-		{474FF312-5C2F-4CE2-885E-91F356912B2F} = {474FF312-5C2F-4CE2-885E-91F356912B2F}
-	EndProjectSection
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "frontend", "Frontend\frontend.esproj", "{474FF312-5C2F-4CE2-885E-91F356912B2F}"
 EndProject

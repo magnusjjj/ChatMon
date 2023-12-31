@@ -16,10 +16,11 @@
             </n-button>
         </div>
         <div class="content">
-            <PersonSlot v-for="(person, index) in PersonList" :key="index" :person="person" :slotnumber="index" @CharacterPictureClicked="OnCharacterClicked" :message="MessageList[index]" />
+            <div class="personrow">
+                <PersonSlot v-for="(person, index) in PersonList" :key="index" :person="person" :slotnumber="index" @CharacterPictureClicked="OnCharacterClicked" :message="MessageList[index]" />
+            </div>
             <PersonConfigurator :show="ShouldShowConfigurator" :personslot="ConfiguratorSlot" :person="ConfiguratorPerson" @SaveCompleted="ShouldShowConfigurator = false" @Cancelled="ShouldShowConfigurator = false" />
             <ChatMonSettings :show="ShouldShowSettings" @SaveCompleted="ShouldShowSettings = false" @Cancelled="ShouldShowSettings = false" />
-
         </div>
         <div class="ShowSettingsButton" v-if="ShouldShowUI">
             <n-button @click="ShouldShowSettings = true" size="large" type="primary">
@@ -186,5 +187,9 @@
 
     .close {
         float: right;
+    }
+
+    .personrow {
+
     }
 </style>

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ChatMon"
         mc:Ignorable="d"
         xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
-        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded" AllowsTransparency="True" WindowStyle="None" Topmost="False" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+        Title="MainWindow" Height="1200" Width="800" Loaded="Window_Loaded" AllowsTransparency="True" WindowStyle="None" Topmost="False" MouseLeftButtonDown="Window_MouseLeftButtonDown">
     <Window.Background>
         <SolidColorBrush Color="#FFB0B0B0"
                          Opacity="0.01" />
@@ -14,8 +14,8 @@
     <Grid>
         <StackPanel>
         <!--<TextBlock Text="Chatmon"></TextBlock>-->
-        
-        <wv2:WebView2 Name="webView" Width="800" Height="600"/>
+
+            <wv2:WebView2 Name="webView" Height="1200" Width="800"/>
         </StackPanel>
     </Grid>
 </Window>
